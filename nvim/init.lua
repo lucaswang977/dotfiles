@@ -220,7 +220,7 @@ require('lazy').setup({
   -- BOOKMARK: PLUGINS: LSP, COMPLETION & LINTING
 
   -- A collection of LSP server configurations for the Nvim LSP client.
-  --  NOTE: (opinionated) We make cmake-tools to generate build files 
+  --  NOTE: (opinionated) We make cmake-tools to generate build files
   --        in $HOME/.cache/cmake_builds
   {
     'neovim/nvim-lspconfig',
@@ -320,6 +320,11 @@ require('lazy').setup({
 
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
+      local os_sep = package.config:sub(1, 1)
+      local cwd = vim.fn.getcwd()
+      local project_name = vim.fn.fnamemodify(cwd, ':t')
+      local build_dir = os.getenv 'HOME' .. os_sep .. '.cache' .. os_sep .. 'cmake_builds' .. os_sep .. project_name
+
       local servers = {
         lua_ls = {
           settings = {
@@ -350,14 +355,15 @@ require('lazy').setup({
         },
       }
 
-      local os_sep = package.config:sub(1, 1)
-      local cwd = vim.fn.getcwd()
-      local project_name = vim.fn.fnamemodify(cwd, ':t')
-      local build_dir = os.getenv 'HOME' .. os_sep .. '.cache' .. os_sep .. 'cmake_builds' .. os_sep .. project_name
-
       vim.lsp.config['clangd'] = {
-        cmd = { 'clangd', '--compile-commands-dir=' .. build_dir },
+        cmd = {
+          'clangd',
+          '--compile-commands-dir=' .. build_dir,
+          '--query-driver=/nix/store/*-gcc-wrapper-*/bin/g++,/nix/store/*-gcc-wrapper-*/bin/gcc',
+          '--background-index',
+        },
         filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
+        -- root_markers is the Nvim 0.11 replacement for root_dir
         root_markers = { 'compile_commands.json', '.git' },
         capabilities = capabilities,
       }
@@ -470,7 +476,6 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs',
     opts = {
       ensure_installed = {
         'bash',
