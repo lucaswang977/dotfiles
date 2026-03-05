@@ -362,7 +362,7 @@ require('lazy').setup({
           '--query-driver=/nix/store/*-gcc-wrapper-*/bin/g++,/nix/store/*-gcc-wrapper-*/bin/gcc',
           '--background-index',
         },
-        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
+        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
         -- root_markers is the Nvim 0.11 replacement for root_dir
         root_markers = { 'compile_commands.json', '.git' },
         capabilities = capabilities,
