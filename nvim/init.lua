@@ -475,10 +475,16 @@ require('lazy').setup({
   -- based on it.
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
+    branch = 'master', -- Back to safety!
     build = ':TSUpdate',
     config = function()
-      require('nvim-treesitter.configs').setup {
+      -- We go back to using the '.configs' module
+      local status_ok, configs = pcall(require, 'nvim-treesitter.configs')
+      if not status_ok then
+        return
+      end
+
+      configs.setup {
         ensure_installed = {
           'bash',
           'c',
@@ -491,17 +497,13 @@ require('lazy').setup({
           'query',
           'vim',
           'vimdoc',
+          'yaml',
         },
         auto_install = true,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = { 'ruby' },
-        },
-        indent = { enable = true, disable = { 'ruby' } },
+        highlight = { enable = true }, -- Let the plugin handle highlights again
       }
     end,
   },
-
   -- Show code context like context.vim
   {
     'nvim-treesitter/nvim-treesitter-context',

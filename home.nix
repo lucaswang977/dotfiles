@@ -20,6 +20,7 @@ in
     pkgs.home-manager
     pkgs.git
     pkgs.neovim
+    pkgs.tree-sitter
     pkgs.eza
     pkgs.bat
     pkgs.bottom
