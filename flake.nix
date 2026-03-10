@@ -30,10 +30,10 @@
         };
     in {
       homeConfigurations = {
-        "username1-macos" = mkHome {
-          username = "username1";
+        "wanglei" = mkHome {
+          username = "wanglei";
           system = "aarch64-darwin";
-          homeDirectory = "/Users/username1";
+          homeDirectory = "/Users/wanglei";
         };
 
         "wangle" = mkHome {

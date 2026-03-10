@@ -24,7 +24,6 @@ in
     pkgs.eza
     pkgs.bat
     pkgs.bottom
-    pkgs.devbox
     pkgs.fzf
     pkgs.fd
     pkgs.nodejs_22
@@ -34,7 +33,6 @@ in
     pkgs.starship
     pkgs.zsh-fzf-tab
     pkgs.fvm
-    pkgs.circumflex
     pkgs.yarn
     pkgs.ssh-copy-id
 

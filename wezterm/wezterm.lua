@@ -3,9 +3,9 @@ local config = wezterm.config_builder()
 
 config.color_scheme = "GitHub Dark Default"
 config.initial_cols = 120
-config.initial_rows = 28
+config.initial_rows = 60
 
-config.font_size = 10
+config.font_size = 11
 config.font = wezterm.font_with_fallback({
 	{
 		family = "MonaspiceAr Nerd Font Mono",
