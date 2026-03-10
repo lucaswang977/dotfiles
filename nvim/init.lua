@@ -49,6 +49,67 @@ end)
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+if vim.fn.has 'unix' == 1 and vim.fn.executable 'ibus' == 1 then
+  -- Force IME to close (English/Direct Input) when leaving Insert mode
+  vim.api.nvim_create_autocmd('InsertLeave', {
+    group = vim.api.nvim_create_augroup('fcitx5_ime_off', { clear = true }),
+    callback = function()
+      vim.fn.system 'fcitx5-remote -c'
+    end,
+    desc = 'Disable fcitx5 IME on Normal mode',
+  })
+
+  -- Optional: If you want Neovim to remember and restore Japanese when you re-enter Insert mode
+  -- (Remove this block if you prefer Neovim to always enter Insert mode in English)
+  local fcitx_state = '1' -- '1' means inactive, '2' means active
+  vim.api.nvim_create_autocmd('InsertLeave', {
+    callback = function()
+      fcitx_state = vim.fn.system('fcitx5-remote'):gsub('%s+', '')
+      vim.fn.system 'fcitx5-remote -c'
+    end,
+  })
+
+  vim.api.nvim_create_autocmd('InsertEnter', {
+    callback = function()
+      if fcitx_state == '2' then
+        vim.fn.system 'fcitx5-remote -o'
+      end
+    end,
+  })
+end
+
+-- Auto-quit if the only remaining windows are utility/sidebar windows
+autocmd('BufEnter', {
+  group = augroup('QuitIfOnlyUtilityWindowsLeft', { clear = true }),
+  callback = function()
+    -- Add any filetypes here that you consider "utility" sidebars
+    local utility_filetypes = { 'aerial', 'qf', 'cmake_tools_terminal' }
+    local has_real_file = false
+    local win_count = 0
+
+    -- Loop through all open windows
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      -- Ignore floating windows (like Telescope or Hover docs)
+      if vim.api.nvim_win_get_config(win).zindex == nil then
+        win_count = win_count + 1
+        local buf = vim.api.nvim_win_get_buf(win)
+        local ft = vim.bo[buf].filetype
+        -- If we find a window that is NOT in our utility list, a real file is still open
+        if not vim.tbl_contains(utility_filetypes, ft) then
+          has_real_file = true
+          break
+        end
+      end
+    end
+
+    -- If there are windows open, but NONE of them are real files, quit Neovim!
+    if win_count > 0 and not has_real_file then
+      vim.cmd 'qall'
+    end
+  end,
+  desc = 'Quit Neovim if only utility windows are left',
+})
+
 -- Highlight on Yank
 autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -329,8 +390,14 @@ require('lazy').setup({
         lua_ls = {
           settings = {
             Lua = {
+              diagnostics = {
+                globals = { 'vim' },
+              },
               completion = {
                 callSnippet = 'Replace',
+              },
+              workspace = {
+                checkThirdParty = false,
               },
             },
           },
@@ -484,6 +551,7 @@ require('lazy').setup({
         return
       end
 
+      ---@diagnostic disable-next-line: missing-fields
       configs.setup {
         ensure_installed = {
           'bash',
@@ -587,6 +655,8 @@ require('lazy').setup({
 
       -- Automatic highlighting of word under cursor
       require('mini.cursorword').setup()
+
+      require('mini.bufremove').setup()
 
       local statusline = require 'mini.statusline'
       statusline.setup { use_icons = vim.g.have_nerd_font }
@@ -730,6 +800,9 @@ require('lazy').setup({
 vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { desc = '[W]rite to current file' })
 vim.keymap.set('n', '<leader>q', '<cmd>quit<CR>', { desc = '[Q]uit' })
 vim.keymap.set('n', '<leader>Q', '<cmd>quitall<CR>', { desc = '[Q]uit all' })
+vim.keymap.set('n', '<leader>c', function()
+  require('mini.bufremove').delete(0, false)
+end, { desc = '[C]lose current buffer (keep splits)' })
 
 -- BOOKMARK: KEYMAPPING: UI Toggles
 vim.keymap.set('n', '<leader>e', function()
