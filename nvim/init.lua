@@ -424,6 +424,8 @@ require('lazy').setup({
 
       vim.lsp.config['clangd'] = {
         cmd = {
+          'env',
+          'LC_ALL=C',
           'clangd',
           '--compile-commands-dir=' .. build_dir,
           '--query-driver=/nix/store/*-gcc-wrapper-*/bin/g++,/nix/store/*-gcc-wrapper-*/bin/gcc',
