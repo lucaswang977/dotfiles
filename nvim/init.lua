@@ -428,7 +428,7 @@ require('lazy').setup({
           'LC_ALL=C',
           'clangd',
           '--compile-commands-dir=' .. build_dir,
-          '--query-driver=/nix/store/*-gcc-wrapper-*/bin/g++,/nix/store/*-gcc-wrapper-*/bin/gcc',
+          '--query-driver=/nix/store/*-clang-wrapper-*/bin/clang,/nix/store/*-clang-wrapper-*/bin/clang++,/nix/store/*-gcc-wrapper-*/bin/gcc,/nix/store/*-gcc-wrapper-*/bin/g++',
           '--background-index',
         },
         filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
