@@ -32,7 +32,7 @@ in
     pkgs.yazi
     pkgs.starship
     pkgs.zsh-fzf-tab
-    pkgs.fvm
+    pkgs-unstable.fvm
     pkgs.yarn
     pkgs.ssh-copy-id
 
@@ -90,5 +90,6 @@ in
 
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$PATH";
+    FVM_SKIP_SHELL_COMPLETIONS = "true";
   };
 }

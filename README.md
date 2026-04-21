@@ -28,3 +28,19 @@
     ```bash
     ln -s personal/dotfiles/wezterm/wezterm.lua .wezterm.lua
     ```
+
+### On Flutter
+1. Install a specified version of Flutter
+```bash
+fvm install 3.10.6
+```
+
+2. Set it as a global default setting
+```bash
+fvm global 3.10.6
+```
+
+3. Make sure the flutter is well installed
+```bash
+fvm flutter doctor
+```

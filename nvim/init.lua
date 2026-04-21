@@ -558,6 +558,7 @@ require('lazy').setup({
         ensure_installed = {
           'bash',
           'c',
+          'dart',
           'diff',
           'html',
           'lua',
@@ -773,6 +774,32 @@ require('lazy').setup({
         action = 'lsp', -- This stops the symlink and notifies LSP instead
       },
     },
+  },
+  {
+    'akinsho/flutter-tools.nvim',
+    lazy = false,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      require('flutter-tools').setup {
+        fvm = true,
+        lsp = {
+          capabilities = require('blink.cmp').get_lsp_capabilities(),
+          settings = {
+            showTodos = true,
+            completeFunctionCalls = true,
+          },
+        },
+        widget_guides = {
+          enabled = true,
+        },
+        dev_log = {
+          enabled = true,
+          open_cmd = 'tabedit',
+        },
+      }
+    end,
   },
 }, {
   -- BOOKMARK: Lazy Config
