@@ -10,6 +10,8 @@ if wezterm.target_triple:find("darwin") then
 elseif wezterm.target_triple:find("linux") then
 	config.font_size = 10.0
 	config.initial_rows = 50
+	config.use_ime = true
+        config.xim_im_name = 'fcitx'
 else
 	config.font_size = 10.0
 	config.initial_rows = 50
