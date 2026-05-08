@@ -5,25 +5,36 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
+    nixgl.url = "github:nix-community/nixGL";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixgl, home-manager, ... }@inputs:
     let
       lib = nixpkgs.lib;
+      
       mkHome = { username, system, homeDirectory }:
         let
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [ nixgl.overlay ];
+          };
+          
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
         in
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
           extraSpecialArgs = {
-            inherit username homeDirectory;
-            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+            inherit username homeDirectory pkgs-unstable;
           };
 
           modules = [ ./home.nix ];
