@@ -38,7 +38,6 @@ in
   ]
   ++ (if isLinux then [
     pkgs.xclip
-    pkgs.nixgl.auto.nixGLDefault
   ] else []);
   
   programs = {
