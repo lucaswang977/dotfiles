@@ -51,24 +51,6 @@ in
     bash.enable = true; # see note on other shells below
   };
 
-  programs.ghostty = {
-    enable = true;
-    # Using pkgs-unstable ensures you get the latest Ghostty features
-    package = if isLinux then 
-                pkgs-unstable.ghostty 
-              else 
-                pkgs-unstable.ghostty; 
-
-    enableZshIntegration = true;
-    settings = {
-      theme = "Catppuccin Macchiato";
-      font-size = 12;
-      font-family = "MonaspiceAr Nerd Font Mono";
-      macos-option-as-alt = pkgs.lib.mkIf isDarwin "left";
-      unfocused-split-opacity = 0.8;
-    };
-  };
-
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -84,10 +66,6 @@ in
     };
     
     initContent = builtins.readFile ./zsh/zshrc;
-
-    shellAliases = {
-      ghostty = if isLinux then "nixGL ghostty" else "ghostty";
-    };
   };
   
   programs.fzf = {
@@ -107,6 +85,11 @@ in
 
   xdg.configFile."yazi" = {
     source = ./yazi;
+    recursive = true;
+  };
+
+  xdg.configFile."ghostty" = {
+    source = ./ghostty;
     recursive = true;
   };
 
