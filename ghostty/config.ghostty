@@ -50,9 +50,11 @@
 
 font-family = MonaspiceAr Nerd Font Mono
 font-size = 10
-font-feature = -dlig
+font-feature = "ss01"
+font-feature = "ss02"
+font-feature = "ss03"
 
-theme = GitHub Dark
+theme = Dracula+
 window-theme = dark
 background-opacity = 0.9
 gtk-wide-tabs = false
@@ -95,6 +97,8 @@ keybind = ctrl+a>c=new_tab
 # Go to next/previous
 keybind = ctrl+a>n=next_tab
 keybind = ctrl+a>p=previous_tab
+keybind = ctrl+right=next_tab
+keybind = ctrl+left=previous_tab
 
 # Go to specified tab (kitty goto_tab)
 keybind = ctrl+a>1=goto_tab:1
