@@ -35,6 +35,7 @@ in
     pkgs-unstable.fvm
     pkgs.yarn
     pkgs.ssh-copy-id
+    pkgs.rustup
   ]
   ++ (if isLinux then [
     pkgs.xclip
