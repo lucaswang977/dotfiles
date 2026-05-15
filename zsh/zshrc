@@ -118,4 +118,4 @@ fi
 
 eval "$(direnv hook zsh)"
 
-export PATH="$HOME/fvm/default/bin:$PATH"
+export PATH="$PATH:$HOME/.cargo/bin/:$HOME/fvm/default/bin"
