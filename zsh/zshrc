@@ -111,6 +111,40 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+function gitex() {
+  if [[ $# -lt 2 ]]; then
+    echo "Usage: gitex <source1> [source2 ...] <destination_directory>"
+    return 1
+  fi
+
+  local dest="${@[-1]}"
+  local sources=("${@[1,-2]}")
+
+  mkdir -p "$dest"
+
+  for src in "${sources[@]}"; do
+    if [[ -d "$src" ]]; then
+      local folder_name=$(basename "$src")
+      local final_dest="$dest/$folder_name"
+      
+      mkdir -p "$final_dest"
+      
+      if (cd "$src" && git rev-parse --is-inside-work-tree &>/dev/null); then
+        (cd "$src" && git archive HEAD) | tar -x -C "$final_dest"
+        echo "✓ Exported tracked folder: $src -> $final_dest"
+      else
+        echo "✗ Skip: '$src' is not a git repository."
+      fi
+
+    elif [[ -f "$src" ]]; then
+      cp "$src" "$dest/"
+      echo "✓ Copied file: $src -> $dest/"
+    else
+      echo "！Error: '$src' is not a valid file or directory."
+    fi
+  done
+}
+
 # Nix initialization
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
