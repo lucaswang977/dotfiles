@@ -407,6 +407,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua',
+        'eslint',
+        'ts_ls'
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -421,6 +423,13 @@ require('lazy').setup({
           end,
         },
       }
+
+      vim.lsp.config['ts_ls'] = {
+        filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        capabilities = capabilities,
+      }
+
+      vim.lsp.enable('ts_ls')
 
       vim.lsp.config['clangd'] = {
         cmd = {
@@ -438,6 +447,32 @@ require('lazy').setup({
       }
 
       vim.lsp.enable 'clangd'
+    end,
+  },
+
+  {
+    'nvimtools/none-ls.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvimtools/none-ls-extras.nvim',
+    },
+    config = function()
+      local null_ls = require('null-ls')
+
+      null_ls.setup({
+        sources = {
+          require("none-ls.diagnostics.eslint").with({
+            cwd = function(params)
+              return require('lspconfig.util').root_pattern('eslint.config.js', '.eslintrc.cjs', 'package.json')(params.bufname)
+            end,
+          }),
+          require("none-ls.formatting.eslint").with({
+            cwd = function(params)
+              return require('lspconfig.util').root_pattern('eslint.config.js', '.eslintrc.cjs', 'package.json')(params.bufname)
+            end,
+          }),
+        },
+      })
     end,
   },
 
