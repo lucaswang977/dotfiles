@@ -70,11 +70,6 @@ in
     initContent = builtins.readFile ./zsh/zshrc;
   };
 
-  programs.tmux = {
-    enable = true;
-    extraConfig = builtins.readFile ./tmux/tmux.conf;
-  };
-  
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
@@ -95,6 +90,10 @@ in
     recursive = true;
   };
 
+  home.file.".tmux.conf" = {
+    source = ./tmux/tmux.conf;
+  };
+ 
   home.file.".aider.conf.yml" = {
     source = ./aider/aider.conf.yml;
   };
