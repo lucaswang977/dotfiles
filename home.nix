@@ -22,20 +22,22 @@ in
     pkgs.neovim
     pkgs.tree-sitter
     pkgs.eza
-    pkgs.bat
     pkgs.bottom
     pkgs.fzf
+    pkgs.tmux
     pkgs.fd
-    pkgs.nodejs_22
     pkgs.ripgrep
     pkgs.lazygit
     pkgs.yazi
-    pkgs.starship
     pkgs.zsh-fzf-tab
-    pkgs-unstable.fvm
-    pkgs.yarn
+    pkgs.starship
     pkgs.ssh-copy-id
+    pkgs.aider-chat
+    pkgs.nodejs_22
+    pkgs.yarn
     pkgs.rustup
+    pkgs.poetry
+    pkgs-unstable.fvm
   ]
   ++ (if isLinux then [
     pkgs.xclip
@@ -67,6 +69,11 @@ in
     
     initContent = builtins.readFile ./zsh/zshrc;
   };
+
+  programs.tmux = {
+    enable = true;
+    extraConfig = builtins.readFile ./tmux/tmux.conf;
+  };
   
   programs.fzf = {
     enable = true;
@@ -88,9 +95,8 @@ in
     recursive = true;
   };
 
-  xdg.configFile."ghostty" = {
-    source = ./ghostty;
-    recursive = true;
+  home.file.".aider.conf.yml" = {
+    source = ./aider/aider.conf.yml;
   };
 
   home.sessionVariables = {

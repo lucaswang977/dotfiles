@@ -101,7 +101,6 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vi="nvim"
 alias ls="eza"
-alias cat="bat"
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -151,5 +150,8 @@ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
 fi
 
 eval "$(direnv hook zsh)"
+
+export OPENAI_BASE_URL="http://localhost:6969/v1"
+export OPENAI_API_KEY="dummy-string"
 
 export PATH="$PATH:$HOME/.cargo/bin/:$HOME/fvm/default/bin"

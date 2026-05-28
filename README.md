@@ -1,5 +1,10 @@
 ## Environment Setup
 
+### Install Font
+1. Use Monaspice Nerd Font
+1. Install from [here](https://www.nerdfonts.com/font-downloads)
+1. Setup the terminal emulator (font etc.)
+
 ### Install Nix and activate Home Manager
 
 1. Install Nix
@@ -8,7 +13,6 @@
     ```
 1. Install Developer tools
 1. Edit the flake.nix and home.nix, change the username and architecure
-1. Install the [Ghostty](https://ghostty.org/docs/install/binary)
 1. Remove the local config files.
     ```bash
     rm -rf .local/state/nvim
@@ -19,7 +23,7 @@
     rm ~/.profile
     rm ~/.zshenv
     rm ~/.config/starship.toml
-    rm ~/.config/ghostty
+    rm ~/.config/tmux
     ```
 1. Activate Home Manager
     ```bash
@@ -27,10 +31,6 @@
     echo "experimental-features = nix-command flakes" > $HOME/.config/nix/nix.conf
     nix run home-manager -- switch --flake .#username
     ```
-
-### On Font
-1. Use Monaspice Nerd Font
-1. Install from [here](https://www.nerdfonts.com/font-downloads)
 
 ### On Flutter
 1. Install a specified version of Flutter
