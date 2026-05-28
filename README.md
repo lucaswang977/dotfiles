@@ -47,3 +47,32 @@ fvm global 3.10.6
 ```bash
 fvm flutter doctor
 ```
+
+### On WebAI-to-API
+1. Enable the Python 3.11+
+```bash
+poetry env use python3.11
+```
+
+2. Clone the repo
+```bash
+git clone https://github.com/Amm1rr/WebAI-to-API.git
+```
+
+3. Install the dependencies
+```bash
+poetry install
+```
+
+4. Update the config file
+```bash
+cp config.conf.example config.conf
+
+# gemini_cookie_1psid =
+# gemini_cookie_1psidts =
+```
+
+5. Start the server
+```bash
+poetry run python src/run.py
+```
