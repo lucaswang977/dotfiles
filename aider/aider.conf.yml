@@ -1,4 +1,4 @@
-model: openai/gemini-3-flash-thinking
+model: openai/gemini-3-flash-thinking-plus
 dark-mode: true
 chat-mode: ask
 max-chat-history-tokens: 100000
