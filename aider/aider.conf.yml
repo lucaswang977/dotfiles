@@ -4,3 +4,4 @@ chat-mode: ask
 max-chat-history-tokens: 100000
 map-tokens: 2048
 restore-chat-history: true
+auto-commits: false
