@@ -37,6 +37,7 @@ in
     pkgs.yarn
     pkgs.rustup
     pkgs.poetry
+    pkgs.aichat
     pkgs-unstable.fvm
   ]
   ++ (if isLinux then [
