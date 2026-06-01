@@ -633,6 +633,7 @@ require('lazy').setup({
   -- A code outline window for skimming and quick navigation.
   {
     'stevearc/aerial.nvim',
+    branch = 'nvim-0.11',
     opts = {},
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
