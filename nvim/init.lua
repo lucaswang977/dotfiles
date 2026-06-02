@@ -278,6 +278,21 @@ require('lazy').setup({
     },
   },
 
+  -- Seamless navigation between tmux panes and vim splits
+  {
+    'christoomey/vim-tmux-navigator',
+    lazy = false,
+    init = function()
+      vim.g.tmux_navigator_no_mappings = 1 -- Disable default mappings so we can define them cleanly below
+    end,
+    keys = {
+      { '<A-h>', '<cmd>TmuxNavigateLeft<cr>', desc = 'Window: Move focus to the left' },
+      { '<A-j>', '<cmd>TmuxNavigateDown<cr>', desc = 'Window: Move focus down' },
+      { '<A-k>', '<cmd>TmuxNavigateUp<cr>', desc = 'Window: Move focus up' },
+      { '<A-l>', '<cmd>TmuxNavigateRight<cr>', desc = 'Window: Move focus to the right' },
+    },
+  },
+
   -- BOOKMARK: PLUGINS: LSP, COMPLETION & LINTING
 
   -- A collection of LSP server configurations for the Nvim LSP client.
@@ -925,11 +940,6 @@ vim.keymap.set('n', '<leader>sn', function()
 end, { desc = '[S]earch [N]eovim files' })
 
 -- BOOKMARK: KEYMAPPING: Window Navigation (Ctrl+hjkl)
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
 -- Terminal Exit
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
