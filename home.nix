@@ -20,6 +20,7 @@ in
     pkgs.home-manager
     pkgs.git
     pkgs.neovim
+    pkgs.llvmPackages.clang-unwrapped
     pkgs.tree-sitter
     pkgs.eza
     pkgs.bottom
@@ -38,6 +39,7 @@ in
     pkgs.rustup
     pkgs.poetry
     pkgs.aichat
+    pkgs.sshs
     pkgs-unstable.fvm
   ]
   ++ (if isLinux then [
