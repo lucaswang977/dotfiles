@@ -33,7 +33,6 @@ in
     pkgs.zsh-fzf-tab
     pkgs.starship
     pkgs.ssh-copy-id
-    pkgs.aider-chat
     pkgs.nodejs_22
     pkgs.yarn
     pkgs.rustup
@@ -97,10 +96,6 @@ in
     source = ./tmux/tmux.conf;
   };
  
-  home.file.".aider.conf.yml" = {
-    source = ./aider/aider.conf.yml;
-  };
-
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$PATH";
     FVM_SKIP_SHELL_COMPLETIONS = "true";
