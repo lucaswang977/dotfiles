@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, username, homeDirectory, ... }:
+{ pkgs, pkgs-unstable, username, homeDirectory, lib, ... }:
 
 let
   isLinux = pkgs.stdenv.isLinux;
@@ -41,6 +41,7 @@ in
     pkgs.sshs
     pkgs.lynx
     pkgs.github-cli
+    pkgs.uv
     pkgs-unstable.fvm
   ]
   ++ (if isLinux then [
@@ -101,5 +102,20 @@ in
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$PATH";
     FVM_SKIP_SHELL_COMPLETIONS = "true";
+  };
+
+  home.activation = {
+    installGptme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      export PATH="${pkgs.git}/bin:${pkgs.uv}/bin:$PATH"
+      GPTME_DIR="$HOME/.local/share/gptme-repo"
+      
+      if [ ! -d "$GPTME_DIR" ]; then
+        $DRY_RUN_CMD git clone https://github.com/gptme/gptme.git "$GPTME_DIR"
+      else
+        $DRY_RUN_CMD git -C "$GPTME_DIR" pull
+      fi
+      
+      $DRY_RUN_CMD uv tool install "$GPTME_DIR" --force
+    '';
   };
 }
