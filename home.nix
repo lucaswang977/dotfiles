@@ -39,6 +39,8 @@ in
     pkgs.poetry
     pkgs.aichat
     pkgs.sshs
+    pkgs.lynx
+    pkgs.github-cli
     pkgs-unstable.fvm
   ]
   ++ (if isLinux then [
