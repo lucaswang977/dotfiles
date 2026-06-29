@@ -103,19 +103,4 @@ in
     PATH = "$HOME/.local/bin:$PATH";
     FVM_SKIP_SHELL_COMPLETIONS = "true";
   };
-
-  home.activation = {
-    installGptme = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      export PATH="${pkgs.git}/bin:${pkgs.uv}/bin:$PATH"
-      GPTME_DIR="$HOME/.local/share/gptme-repo"
-      
-      if [ ! -d "$GPTME_DIR" ]; then
-        $DRY_RUN_CMD git clone https://github.com/gptme/gptme.git "$GPTME_DIR"
-      else
-        $DRY_RUN_CMD git -C "$GPTME_DIR" pull
-      fi
-      
-      $DRY_RUN_CMD uv tool install "$GPTME_DIR" --force
-    '';
-  };
 }
