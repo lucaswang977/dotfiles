@@ -154,4 +154,4 @@ eval "$(direnv hook zsh)"
 export OPENAI_BASE_URL="http://localhost:6969/v1"
 export OPENAI_API_KEY="dummy-string"
 
-export PATH="$PATH:$HOME/.cargo/bin/:$HOME/fvm/default/bin"
+export PATH="$PATH:$HOME/.npm-global/bin:$HOME/.cargo/bin/:$HOME/fvm/default/bin"
