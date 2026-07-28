@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, username, homeDirectory, lib, ... }:
+{ pkgs, username, homeDirectory, lib, ... }:
 
 let
   isLinux = pkgs.stdenv.isLinux;
@@ -42,7 +42,6 @@ in
     pkgs.lynx
     pkgs.github-cli
     pkgs.uv
-    pkgs-unstable.fvm
   ]
   ++ (if isLinux then [
     pkgs.xclip
@@ -101,6 +100,5 @@ in
  
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$PATH";
-    FVM_SKIP_SHELL_COMPLETIONS = "true";
   };
 }
