@@ -667,18 +667,6 @@ require('lazy').setup({
           vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
         end,
         close_automatic_events = { 'unsupported' },
-        open_automatic = function(bufnr)
-          local auto_filetypes = { 'python', 'c', 'cpp', 'javascript' }
-          local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
-
-          for _, type in ipairs(auto_filetypes) do
-            if ft == type then
-              return true
-            end
-          end
-
-          return false
-        end,
       }
     end,
   },
