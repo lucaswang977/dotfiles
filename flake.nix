@@ -32,16 +32,16 @@
         };
     in {
       homeConfigurations = {
-        "wanglei" = mkHome {
-          username = "wanglei";
+        "username" = mkHome {
+          username = "username";
           system = "aarch64-darwin";
-          homeDirectory = "/Users/wanglei";
+          homeDirectory = "/Users/username";
         };
 
-        "wangle" = mkHome {
-          username = "wangle";
+        "username" = mkHome {
+          username = "username";
           system = "x86_64-linux";
-          homeDirectory = "/home/wangle";
+          homeDirectory = "/home/username";
         };
       };
     };
