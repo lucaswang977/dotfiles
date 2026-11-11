@@ -1,6 +1,8 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$PATH:$HOME/.local/bin:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/lib
+
+export PATH=$PATH:$HOME/.cargo/bin/:$HOME/.npm-global/bin:$HOME/fvm/bin
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -111,48 +113,9 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-function gitex() {
-  if [[ $# -lt 2 ]]; then
-    echo "Usage: gitex <source1> [source2 ...] <destination_directory>"
-    return 1
-  fi
-
-  local dest="${@[-1]}"
-  local sources=("${@[1,-2]}")
-
-  mkdir -p "$dest"
-
-  for src in "${sources[@]}"; do
-    if [[ -d "$src" ]]; then
-      local folder_name=$(basename "$src")
-      local final_dest="$dest/$folder_name"
-      
-      mkdir -p "$final_dest"
-      
-      if (cd "$src" && git rev-parse --is-inside-work-tree &>/dev/null); then
-        (cd "$src" && git archive HEAD) | tar -x -C "$final_dest"
-        echo "✓ Exported tracked folder: $src -> $final_dest"
-      else
-        echo "✗ Skip: '$src' is not a git repository."
-      fi
-
-    elif [[ -f "$src" ]]; then
-      cp "$src" "$dest/"
-      echo "✓ Copied file: $src -> $dest/"
-    else
-      echo "！Error: '$src' is not a valid file or directory."
-    fi
-  done
-}
-
 # Nix initialization
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi
 
 eval "$(direnv hook zsh)"
-
-export OPENAI_BASE_URL="http://localhost:6969/v1"
-export OPENAI_API_KEY="dummy-string"
-
-export PATH="$PATH:$HOME/.cargo/bin/:$HOME/.npm-global/bin:$HOME/fvm/bin"
