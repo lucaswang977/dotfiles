@@ -97,7 +97,13 @@ in
   home.file.".tmux.conf" = {
     source = ./tmux/tmux.conf;
   };
- 
+
+  # tmux ステータスバーのシステムモニタ (tmux.conf の status-right から呼ばれる)
+  home.file.".local/bin/tmux-status" = {
+    source = ./tmux/status.sh;
+    executable = true;
+  };
+
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$PATH";
   };
