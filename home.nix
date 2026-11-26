@@ -104,6 +104,12 @@ in
     executable = true;
   };
 
+  # デスクトップ通知を監視して、tmux のステータスバー用にファイルへ書き出す (tmux.conf の run-shell から起動される)
+  home.file.".local/bin/tmux-notify" = {
+    source = ./tmux/notify.py;
+    executable = true;
+  };
+
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$PATH";
   };

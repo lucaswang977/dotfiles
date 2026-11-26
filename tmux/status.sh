@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # tmux status-right 用のシステムモニタ
-# 対象: CPU使用率 / メモリ使用率 / CPU温度 / ディスク使用率 / ネットワーク速度 / バッテリー
+# 対象: CPU使用率 / メモリ使用率 / CPU温度 / ディスク使用率 / ネットワーク速度 / バッテリー / 通知 (件数)
 #
 # - 値が正常な項目は表示しない (自動非表示)。しきい値は下の「しきい値」で調整する
 # - Linux は /proc と /sys を直接読み、macOS は標準コマンド (iostat / vm_stat / pmset など) を使う
@@ -20,6 +20,7 @@ TEMP_WARN=70 TEMP_CRIT=85     # CPU温度 (°C)
 DISK_WARN=80 DISK_CRIT=90     # ディスク使用率 (%)
 BAT_WARN=30  BAT_CRIT=15      # バッテリー残量 (%)。この値「以下」で表示する
 NET_WARN=1048576              # ネットワーク速度 (bytes/s)。下り・上りのどちらかがこの値以上で表示する
+NOTIFY_WARN=1                 # 通知 (件)。この件数以上のときに、赤い点と件数を表示する
 # -------------------------------------------------------------------------------
 
 state_dir="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"
@@ -249,6 +250,19 @@ fi
 
 # バッテリーは残量が少ないほど危険なので、100 からの減少量で判定する
 isnum "$cap" && show $((100 - cap)) $((100 - BAT_WARN)) $((100 - BAT_CRIT)) "BAT ${cap}%${mark}"
+
+# 通知: tmux-notify (別プロセス。tmux/notify.py) が数えた、まだ閉じられていない通知の件数を、赤い点と件数にして先頭に表示する
+# 通知の内容は表示も保存もしない (件数だけ)。通知をクリックしたり消したりすると減り、
+# tmux.conf の Prefix + N かバッジのクリックで、まとめて 0 に戻せる
+# range=user|notify は、バッジをクリックしたと tmux.conf 側で判別するための目印 (見た目は変わらない)
+notify_file="$state_dir/tmux-status-notify.$UID"
+if [[ -r $notify_file ]]; then
+  read -r notify_count < "$notify_file"
+  if isnum "$notify_count" && (( notify_count >= NOTIFY_WARN && notify_count > 0 )); then
+    (( notify_count > 99 )) && notify_count="99+"
+    out="#[range=user|notify]#[fg=colour196]● ${notify_count}#[norange]${out:+ }$out"
+  fi
+fi
 
 # 何も表示しないときは空を返す (末尾の空白は、続く日時との区切り)
 [[ -n $out ]] && printf '%s #[default]' "$out"
